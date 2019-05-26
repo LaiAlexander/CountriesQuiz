@@ -15,20 +15,35 @@ with open("countries_info.json", "r") as file:
 # for country in COUNTRIES:
 #     regions[country['region']].append(country)
 
+# REGIONS = {}
+# for country in COUNTRIES:
+#     if country['region'] in REGIONS:
+#         REGIONS[country['region']].append(country)
+#     else:
+#         REGIONS[country['region']] = []
+#         REGIONS[country['region']].append(country)
+
 REGIONS = {}
 for country in COUNTRIES:
     if country['region'] in REGIONS:
-        REGIONS[country['region']].append(country)
+        if country['subregion'] in REGIONS[country['region']]:
+            REGIONS[country['region']][country['subregion']].append(country)
+        else:
+            REGIONS[country['region']][country['subregion']] = []
+            REGIONS[country['region']][country['subregion']].append(country)
     else:
-        REGIONS[country['region']] = []
-        REGIONS[country['region']].append(country)
+        REGIONS[country['region']] = {}
+        REGIONS[country['region']][country['subregion']] = []
+        REGIONS[country['region']][country['subregion']].append(country)
 
 
 def main():
     play = True
     while play:
-        country = random.choice(REGIONS[random.choice(list(REGIONS))])
-        while country['capital']:
+        region = random.choice(list(REGIONS))
+        subregion = random.choice(list(REGIONS[region]))
+        country = random.choice(REGIONS[region][subregion])
+        while country['capital'][0]:
             hint = list(country['capital'][0])
             user_guess = input(f"What is the capital of {country['name']['common']}? ")
             if user_guess in country['capital']:
