@@ -43,14 +43,20 @@ def main():
         region = random.choice(list(REGIONS))
         subregion = random.choice(list(REGIONS[region]))
         country = random.choice(REGIONS[region][subregion])
-        while country['capital'][0]:
-            hint = list(country['capital'][0])
-            user_guess = input(f"What is the capital of {country['name']['common']}? ")
-            if user_guess in country['capital']:
+        capital = country['capital'].copy()
+        country_name = country['name']['common']
+        print(country)
+        while capital:
+            # print(country['capital'])
+            if not capital[0]:
+                break
+            hint = list(capital[0])
+            user_guess = input(f"What is the capital of {country_name}? ")
+            if user_guess in capital:
                 print("That's correct!")
-                country['capital'].remove(user_guess)
+                capital.remove(user_guess)
             elif user_guess == "pass":
-                print(f"{country['capital']} was the right answer.")
+                print(f"{capital} was the right answer.")
                 break
             elif user_guess == "q":
                 play = False
@@ -58,6 +64,9 @@ def main():
             else:
                 print("That's wrong.")
                 print(f"Here's a hint: {('').join(hint[0:1])}")
+            print(capital, flush=True)
+            if (capital):
+                print("Capital not empty.", flush=True)
 
 if __name__ == "__main__":
     main()
