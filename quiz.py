@@ -45,28 +45,25 @@ def main():
         country = random.choice(REGIONS[region][subregion])
         capital = country['capital'].copy()
         country_name = country['name']['common']
-        print(country)
+        guesses = 0
         while capital:
-            # print(country['capital'])
-            if not capital[0]:
+            if not capital[0]: # For cases where a capital isn't given in the .json-file.
                 break
             hint = list(capital[0])
             user_guess = input(f"What is the capital of {country_name}? ")
+            guesses += 1
             if user_guess in capital:
                 print("That's correct!")
                 capital.remove(user_guess)
             elif user_guess == "pass":
-                print(f"{capital} was the right answer.")
+                print(f"{(', ').join(country['capital'])} was the right answer.")
                 break
             elif user_guess == "q":
                 play = False
                 break
             else:
                 print("That's wrong.")
-                print(f"Here's a hint: {('').join(hint[0:1])}")
-            print(capital, flush=True)
-            if (capital):
-                print("Capital not empty.", flush=True)
+                print(f"Here's a hint: {('').join(hint[0:guesses])}")
 
 if __name__ == "__main__":
     main()
